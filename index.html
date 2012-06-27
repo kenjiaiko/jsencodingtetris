@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<title>jscodingtetris</title>
+		<script language="JavaScript">
+			function save() {
+				if (confirm("update?")) {
+					localStorage.src = document.getElementById("src").value;
+					location.reload(true);
+				}
+			}
+			function load() {
+				if (localStorage.src !== undefined) {
+					document.getElementById("src").value = localStorage.src;
+				} else {
+					document.getElementById("src").value = ''
+						+ 'if(log["bType"] != -1){' + "\n"
+						+ '  if(log["min_y"] == 0){' + "\n"
+						+ '    min_y  = -1;' + "\n"
+						+ '    min_ht = -1;' + "\n"
+						+ '    for(var mm=0; mm < 4; mm++){' + "\n"
+						+ '      for(var y=19; y >= 0; y--){' + "\n"
+						+ '        for(var x=9; x >= -2; x--){' + "\n"
+						+ '          var cnt = 0;' + "\n"
+						+ '          var xpos = [0,0,0,0];' + "\n"
+						+ '          var ypos = [0,0,0,0];' + "\n"
+						+ '          for(var j=3; j > -1; j--){' + "\n"
+						+ '            for(var i=3; i > -1; i--){' + "\n"
+						+ '              if(log["gBlocks"][log["bType"]][mm][j][i]){' + "\n"
+						+ '                if((x+i) >= 0 && ((x+i) < 12) && ((y+j) < 22)){' + "\n"
+						+ '                  if(log["gMap"][y+j][x+i] == 0){' + "\n"
+						+ '                    if(cnt < 4){' + "\n"
+						+ '                      ypos[cnt] = y+j;' + "\n"
+						+ '                      xpos[cnt] = x+i;' + "\n"
+						+ '                      var a_f = 0;' + "\n"
+						+ '                      for(var a=ypos[cnt]; a > 0; a--){' + "\n"
+						+ '                        if(log["gMap"][a][x+i] != 0 && log["gMap"][a][x+i] != 2){' + "\n"
+						+ '                          a_f = 1;' + "\n"
+						+ '                          break;' + "\n"
+						+ '                        }' + "\n"
+						+ '                      }' + "\n"
+						+ '                      if(a_f){' + "\n"
+						+ '                        cnt--;' + "\n"
+						+ '                      }' + "\n"
+						+ '                    }' + "\n"
+						+ '                    cnt++;' + "\n"
+						+ '                  }' + "\n"
+						+ '                }' + "\n"
+						+ '              }' + "\n"
+						+ '            }' + "\n"
+						+ '          }' + "\n"
+						+ '          if(cnt == 4){' + "\n"
+						+ '            var av = 0.0;' + "\n"
+						+ '            var ht = 0.0;' + "\n"
+						+ '            for(var k=0; k < 4; k++){' + "\n"
+						+ '              av += ypos[k];' + "\n"
+						+ '              var ht_f = 0;' + "\n"
+						+ '              ht_f = 0;' + "\n"
+						+ '              for(var l=0; l < 4; l++){' + "\n"
+						+ '                if((xpos[k]+0) == xpos[l] && (ypos[k]+1) == ypos[l]){' + "\n"
+						+ '                  continue;' + "\n"
+						+ '                }' + "\n"
+						+ '                ht_f++;' + "\n"
+						+ '              }' + "\n"
+						+ '              if(ht_f == 4 && log["gMap"][xpos[k]+0][ypos[k]+1]){' + "\n"
+						+ '                ht+=3;' + "\n"
+						+ '              }' + "\n"
+						+ '            }' + "\n"
+						+ '            av = (av / 4) + (ht / 4);' + "\n"
+						+ '            if(min_y < av){' + "\n"
+						+ '              min_y  = av;' + "\n"
+						+ '              min_x  = x;' + "\n"
+						+ '              min_mm = mm;' + "\n"
+						+ '            }' + "\n"
+						+ '          }' + "\n"
+						+ '        } ' + "\n"
+						+ '      }' + "\n"
+						+ '    }' + "\n"
+						+ '  }else{' + "\n"
+						+ '    if(log["min_x"] > log["bPosX"]){' + "\n"
+						+ '      kRight=1;' + "\n"
+						+ '    }' + "\n"
+						+ '    if(log["min_x"] < log["bPosX"]){' + "\n"
+						+ '      kLeft =1;' + "\n"
+						+ '    }' + "\n"
+						+ '    if(log["min_mm"] != log["bMode"]){' + "\n"
+						+ '      kUp = 1;' + "\n"
+						+ '    }else{' + "\n"
+						+ '      if(log["min_x"] == log["bPosX"]){' + "\n"
+						+ '        kDown = 1;' + "\n"
+						+ '      }' + "\n"
+						+ '    }' + "\n"
+						+ '  }' + "\n"
+						+ '}else{' + "\n"
+						+ '  min_y = 0;' + "\n"
+						+ '  min_x = 0;' + "\n"
+						+ '}' + "\n";
+					localStorage.src = document.getElementById("src").value;
+				}
+				document.getElementById("game").focus();
+			}
+			function focus() {
+			}
+		</script>
+	</head>
+	<body onload="load()">
+		<h1 style="font-size:120%;font-weight:bold">jscodingtetris</h1>
+		<div>
+			<div style="float:left;">
+				<iframe id="game" frameborder="0" width="202" height="352" scrolling="no" src="jstetris.html"></iframe>
+			</div>
+			<div>
+				<textarea style="width:202px;height:348px;" id="src"></textarea><br />
+				<input type="button" style="background: #ffffff;" value="UPDATE" onClick="save()">
+			</div>
+			<div style="width:410px;text-align:right;margin-top:2em;padding-top:0.5em;border-top:solid 1px black"><a href="http://07c00.com/">07c00.com</a></div>
+			</div>
+		</div>
+	</body>
+</html>
