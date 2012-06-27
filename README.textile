@@ -1,3 +1,3 @@
-https://github.com/kenjiaiko/jsencodingtetris/blob/master/sample.png!
+!https://github.com/kenjiaiko/jsencodingtetris/blob/master/sample.png!
 http://07c00.com/jstetris/2/
 http://enchantjs.com/
